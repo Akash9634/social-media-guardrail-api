@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+
+  # ================================
+  # POSTGRESQL DATABASE
+  # ================================
+  postgres:
+    image: postgres:15
+
+    container_name: socialgaurd
+
+    restart: always
+
+    environment:
+      POSTGRES_DB: socialgaurd_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_db
+
+    ports:
+      - "5433:5432"   # changed from 5432 → 5433
+
+    volumes:
+      - socialgaurd_postgres_data:/var/lib/postgresql/data
+
+    networks:
+      - socialgaurd_network
+
+
+  # ================================
+  # REDIS
+  # ================================
+  redis:
+    image: redis:7-alpine
+
+    container_name: socialgaurd_redis
+
+    restart: always
+
+    ports:
+      - "6379:6379"   # changed to avoid conflict
+
+    command: redis-server --appendonly yes
+
+    volumes:
+      - socialgaurd_redis_data:/data
+
+    networks:
+      - socialgaurd_network
+
+
+# ================================
+# VOLUMES
+# ================================
+volumes:
+  socialgaurd_postgres_data:
+  socialgaurd_redis_data:
+
+
+# ================================
+# NETWORK
+# ================================
+networks:
+  socialgaurd_network:
+    driver: bridge
