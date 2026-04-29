@@ -1,5 +1,6 @@
 package com.media.socialgaurd.DTO;
 
+import com.media.socialgaurd.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -28,6 +29,9 @@ public class RegisterRequest {
     @NotBlank(message = "Email is required")
     @Email(message = "Must be a valid email")
     private String email;
+
+    @NotBlank(message = "Role is required")
+    private Role role;
 
     // Optional field - defaults to false if not provided
     private Boolean isPremium = false;
